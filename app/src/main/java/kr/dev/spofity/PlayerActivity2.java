@@ -5,10 +5,16 @@ import static kr.dev.spofity.ConstantKt.MEDIA_PLAYER_NEXT;
 import static kr.dev.spofity.ConstantKt.MEDIA_PLAYER_PLAY;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
@@ -43,93 +49,95 @@ public class PlayerActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPleyer2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    1
+            );
+        }
         initUI();
         clicks();
 
-//        loadMusic(currentMusic);
+        registerReceiver(musicReceiver, new IntentFilter("MUSIC_UPDATE"));
+        registerReceiver(progressReceiver, new IntentFilter("MUSIC_PROGRESS"));
 
-        binding.nextMusic.setOnClickListener(view -> {
+        binding.play.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MediaPlayerService.class);
+            intent.setAction(MEDIA_PLAYER_PLAY);
+            startService(intent);
+        });
 
+        binding.nextMusic.setOnClickListener(v -> {
             Intent intent = new Intent(this, MediaPlayerService.class);
             intent.setAction(MEDIA_PLAYER_NEXT);
             startService(intent);
-//            if (mediaPlayer != null) {
-//                mediaPlayer.stop();
-//                mediaPlayer.release();
-//            }
-//            currentMusic++;
-//            if (currentMusic >= musicList.size()) {
-//                currentMusic = 0;
-//            }
-//            loadMusic(currentMusic);
-//            mediaPlayer.start();
-//            isPlaying = true;
-//            binding.tvFulName.setText(musicList.get(currentMusic).musicName);
-//            binding.play.setImageResource(R.drawable.pause_circle_svgrepo_com);
         });
 
-        binding.backMusic.setOnClickListener(view -> {
-
+        binding.backMusic.setOnClickListener(v -> {
             Intent intent = new Intent(this, MediaPlayerService.class);
             intent.setAction(MEDIA_PLAYER_BACK);
             startService(intent);
-
-//            if (mediaPlayer != null) {
-//                mediaPlayer.stop();
-//                mediaPlayer.release();
-//            }
-//            currentMusic--;
-//            if (currentMusic < 0) {
-//                currentMusic = musicList.size() - 1;
-//            }
-//            loadMusic(currentMusic);
-//            mediaPlayer.start();
-//            isPlaying = true;
-//            binding.tvFulName.setText(musicList.get(currentMusic).musicName);
-//            binding.play.setImageResource(R.drawable.pause_circle_svgrepo_com);
         });
 
-        binding.play.setOnClickListener(view -> {
+        binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    Intent intent = new Intent(PlayerActivity2.this, MediaPlayerService.class);
+                    intent.setAction("SEEK_TO");
+                    intent.putExtra("seekPosition", progress);
+                    startService(intent);
+                }
+            }
 
-            Intent  intent = new Intent(this, MediaPlayerService.class);
-            intent.setAction(MEDIA_PLAYER_PLAY);
-            startService(intent);
-
-
-//            if (mediaPlayer != null) {
-//                if (!isPlaying) {
-//                    mediaPlayer.start();
-//                    updateSeekBar();
-//                    binding.tvFulName.setText(musicList.get(currentMusic).musicName);
-//                    binding.play.setImageResource(R.drawable.pause_circle_svgrepo_com);
-//                    isPlaying = true;
-//                } else {
-//                    mediaPlayer.pause();
-//                    binding.tvFulName.setText(musicList.get(currentMusic).musicName);
-//                    binding.play.setImageResource(R.drawable.play_circle_svgrepo_com__1_);
-//                    isPlaying = false;
-//                }
-//            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-
-//        binding.seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                if (fromUser && mediaPlayer != null) {
-//                    int newPosition = (mediaPlayer.getDuration() * progress) / 100;
-//                    mediaPlayer.seekTo(newPosition);
-//                }
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {}
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {}
-//        });
     }
-//
+// 🔔 MUSIC_UPDATE: tugmalar, nom, rasm yangilash
+
+    private final BroadcastReceiver musicReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String name = intent.getStringExtra("musicName");
+            int image = intent.getIntExtra("musicImage", 0);
+            boolean playing = intent.getBooleanExtra("isPlaying", false);
+
+            binding.tvFulName.setText(name);
+            binding.ivImage1.setImageResource(image);
+            binding.play.setImageResource(
+                    playing ? R.drawable.pause_circle_svgrepo_com : R.drawable.play_circle_svgrepo_com__1_
+            );
+        }
+    };
+
+    // 🔁 MUSIC_PROGRESS: seekbar yangilash
+    private final BroadcastReceiver progressReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int current = intent.getIntExtra("current", 0);
+            int duration = intent.getIntExtra("duration", 1);
+            int progress = (int) (((float) current / duration) * 100);
+            binding.seekbar.setProgress(progress);
+
+            String currentTime = formatTime(current);
+            String totalTime = formatTime(duration);
+            binding.tvCurrentTime.setText(currentTime);
+            binding.tvTotalTime.setText(totalTime);
+        }
+    };
+
+    private String formatTime(int millis) {
+        int totalSeconds = millis / 1000;
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
+
+    // ⏱ Format helper funksiyasi
+
 //    private void loadMusic(int index) {
 //        if (mediaPlayer != null) {
 //            mediaPlayer.release();
@@ -214,13 +222,9 @@ public class PlayerActivity2 extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (mediaPlayer != null) {
-            handler.removeCallbacks(runnable);
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
         super.onDestroy();
+        unregisterReceiver(musicReceiver);
+        unregisterReceiver(progressReceiver);
     }
-
 
 }

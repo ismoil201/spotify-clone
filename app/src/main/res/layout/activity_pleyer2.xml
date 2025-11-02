@@ -24,7 +24,7 @@
         android:text="Now Playing"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/montserrat_bold"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,10 +43,10 @@
     <ImageView
         android:id="@+id/iv_image1"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
+        android:layout_height="340dp"
         android:scaleType="centerCrop"
         android:src="@drawable/girl_image"
-        android:layout_marginTop="20sp"
+        android:layout_marginTop="40sp"
         app:layout_constraintTop_toBottomOf="@id/tv_nowPlaying"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -55,7 +55,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sisa Rasa"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textColor="@color/white"
         android:fontFamily="@font/montserrat_bold"
         android:layout_marginTop="16dp"
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat_semibold"
-        android:text="Mahalni"
+        android:text="Xit musics"
         android:textSize="18sp"
         android:textColor="#A4A0A0"
         android:layout_marginTop="8dp"
@@ -93,16 +93,41 @@
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <TextView
+        android:id="@+id/tv_currentTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="00:00"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textColor="#CCCCCC"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/backward"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekbar" />
+
+    <TextView
+        android:id="@+id/tv_totalTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="00:00"
+        android:fontFamily="@font/montserrat_semibold"
+        android:textColor="#CCCCCC"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/backward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seekbar" />
 
     <ImageView
         android:id="@+id/backward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64sp"
         android:src="@drawable/backward_svgrepo_com"
-        android:layout_marginTop="44sp"
-        app:layout_constraintTop_toBottomOf="@id/seekbar"
+        app:layout_constraintEnd_toStartOf="@+id/tv_nowPlaying"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
     <ImageView
         android:id="@+id/back_music"
@@ -140,12 +165,13 @@
         android:id="@+id/forward"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64sp"
         android:paddingTop="4dp"
+
         android:src="@drawable/forward_svgrepo_com__1_"
-        android:layout_marginTop="44sp"
-        app:layout_constraintTop_toBottomOf="@id/seekbar"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toEndOf="@+id/tv_nowPlaying"
+        app:layout_constraintTop_toBottomOf="@id/seekbar" />
 
 
 
