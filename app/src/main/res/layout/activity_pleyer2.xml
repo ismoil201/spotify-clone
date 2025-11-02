@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2C2828"
+    android:padding="24dp"
+    tools:context=".PlayerActivity2">
+
+    <ImageView
+        android:id="@+id/iv_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/group_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/tv_nowPlaying"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Now Playing"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/montserrat_bold"
+        android:textSize="24sp"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/iv_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_image1"
+        android:layout_width="match_parent"
+        android:layout_height="440dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/girl_image"
+        android:layout_marginTop="20sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_nowPlaying"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_fulName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sisa Rasa"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_bold"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_image1"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_musicName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Mahalni"
+        android:textSize="18sp"
+        android:textColor="#A4A0A0"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_fulName"/>
+
+    <ImageView
+        android:id="@+id/music_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/love"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_image1"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+   <SeekBar
+       android:id="@+id/seekbar"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="20dp"
+
+       app:layout_constraintTop_toBottomOf="@id/tv_musicName"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <ImageView
+        android:id="@+id/backward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/backward_svgrepo_com"
+        android:layout_marginTop="44sp"
+        app:layout_constraintTop_toBottomOf="@id/seekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/back_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/back_svgrepo_com"
+        app:layout_constraintTop_toTopOf="@id/backward"
+        app:layout_constraintBottom_toBottomOf="@id/backward"
+        app:layout_constraintStart_toEndOf="@id/backward"
+        android:layout_marginStart="30dp"/>
+    <ImageView
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/play_circle_svgrepo_com__1_"
+        app:layout_constraintTop_toTopOf="@id/forward"
+        app:layout_constraintStart_toEndOf="@id/back_music"
+        app:layout_constraintBottom_toBottomOf="@id/forward"
+        app:layout_constraintEnd_toStartOf="@id/next_music"
+/>
+
+
+
+    <ImageView
+        android:id="@+id/next_music"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/next_svgrepo_com"
+        app:layout_constraintTop_toTopOf="@id/forward"
+        app:layout_constraintBottom_toBottomOf="@id/forward"
+        app:layout_constraintEnd_toStartOf="@id/forward"
+        android:layout_marginEnd="30dp"/>
+
+    <ImageView
+        android:id="@+id/forward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:src="@drawable/forward_svgrepo_com__1_"
+        android:layout_marginTop="44sp"
+        app:layout_constraintTop_toBottomOf="@id/seekbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
